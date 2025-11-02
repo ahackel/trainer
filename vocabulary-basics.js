@@ -1,7 +1,11 @@
-// German-English Vocabulary Data
-// Format: German|English (one pair per line)
+// Vocabulary Set: Basics
+// German-English vocabulary - Basic phrases and words
 
-const vocabularyData = `oben; nach oben (im Haus)|upstairs
+const vocabularySetBasics = {
+    id: "basics",
+    name: "Basics",
+    description: "Basic German phrases and everyday words",
+    words: `oben; nach oben (im Haus)|upstairs
 unten; nach unten (im Haus)|downstairs
 das Zimmer, der Raum|room
 warum?|why?
@@ -27,4 +31,5 @@ sie sind|they're
 geschieden|divorced
 Eltern|parents
 zuhören, horchen|(to) listen
-das (Mobil-)Telefon, das Handy|phone`;
+das (Mobil-)Telefon, das Handy|phone`
+};

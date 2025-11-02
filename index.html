@@ -207,11 +207,50 @@
         .reset-btn:hover {
             background: #c82333;
         }
+
+        .set-selector {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .set-selector label {
+            display: block;
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .set-selector select {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 1em;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .set-selector select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .set-selector select:hover {
+            border-color: #667eea;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Vokabel Trainer</h1>
+
+        <div class="set-selector">
+            <label for="set-select">Vokabel-Set auswählen:</label>
+            <select id="set-select" onchange="onSetChange()">
+                <option value="all">Alle Sets</option>
+            </select>
+        </div>
 
         <div class="stats">
             <div class="stat">
@@ -253,13 +292,68 @@
         <button class="reset-btn" onclick="resetStats()">Statistiken zurücksetzen</button>
     </div>
 
-    <script src="vocabulary.js"></script>
+    <script src="vocabulary-basics.js"></script>
+    <script src="vocabulary-numbers.js"></script>
     <script>
-        // Parse vocabulary data
-        const vocabulary = vocabularyData.trim().split('\n').map(line => {
-            const [german, english] = line.split('|');
-            return { german: german.trim(), english: english.trim() };
-        });
+        // Registry of all available vocabulary sets
+        const vocabularySets = [vocabularySetBasics, vocabularySetNumbers];
+
+        // Parse vocabulary from selected set(s)
+        function loadVocabulary(setId) {
+            let selectedSets = [];
+
+            if (setId === 'all') {
+                selectedSets = vocabularySets;
+            } else {
+                selectedSets = vocabularySets.filter(set => set.id === setId);
+            }
+
+            // Combine and parse all words from selected sets
+            const allWords = selectedSets
+                .map(set => set.words)
+                .join('\n');
+
+            return allWords.trim().split('\n').map(line => {
+                const [german, english] = line.split('|');
+                return { german: german.trim(), english: english.trim() };
+            });
+        }
+
+        // Initialize dropdown with all available sets
+        function initializeSetSelector() {
+            const select = document.getElementById('set-select');
+
+            vocabularySets.forEach(set => {
+                const option = document.createElement('option');
+                option.value = set.id;
+                option.textContent = set.name;
+                select.appendChild(option);
+            });
+
+            // Restore saved selection
+            const savedSet = localStorage.getItem('selectedVocabularySet') || 'all';
+            select.value = savedSet;
+        }
+
+        // Handle set change
+        function onSetChange() {
+            const select = document.getElementById('set-select');
+            const selectedSet = select.value;
+
+            // Save selection
+            localStorage.setItem('selectedVocabularySet', selectedSet);
+
+            // Reload vocabulary
+            vocabulary = loadVocabulary(selectedSet);
+            shuffledVocabulary = shuffleArray(vocabulary);
+            currentIndex = 0;
+
+            // Reset and display first word
+            displayWord();
+        }
+
+        // Load initial vocabulary
+        let vocabulary = loadVocabulary(localStorage.getItem('selectedVocabularySet') || 'all');
 
         // Shuffle array
         function shuffleArray(array) {
@@ -424,6 +518,7 @@
         });
 
         // Initialize on load
+        initializeSetSelector();
         updateStats();
         displayWord();
     </script>
