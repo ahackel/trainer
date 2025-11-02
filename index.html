@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vokabel Trainer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-value.correct {
+            color: #28a745;
+        }
+
+        .stat-value.incorrect {
+            color: #dc3545;
+        }
+
+        .card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 20px;
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .word {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .progress {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        input[type="text"].correct {
+            border-color: #28a745;
+            background-color: #d4edda;
+        }
+
+        input[type="text"].incorrect {
+            border-color: #dc3545;
+            background-color: #f8d7da;
+        }
+
+        .feedback {
+            min-height: 30px;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .feedback.correct {
+            color: #28a745;
+        }
+
+        .feedback.incorrect {
+            color: #dc3545;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px;
+            font-size: 1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .reset-btn {
+            margin-top: 20px;
+            width: 100%;
+            background: #dc3545;
+            color: white;
+        }
+
+        .reset-btn:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Vokabel Trainer</h1>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-label">Korrekt</div>
+                <div class="stat-value correct" id="correct-count">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Falsch</div>
+                <div class="stat-value incorrect" id="incorrect-count">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Erfolgsquote</div>
+                <div class="stat-value" id="success-rate">0%</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="progress" id="progress">Frage 1 von 30</div>
+            <div class="word" id="german-word">Laden...</div>
+
+            <div class="input-group">
+                <input
+                    type="text"
+                    id="answer-input"
+                    placeholder="Gib die englische Übersetzung ein..."
+                    autocomplete="off"
+                >
+            </div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <div class="buttons">
+                <button class="btn-secondary" id="prev-btn" onclick="previousWord()">Zurück</button>
+                <button class="btn-primary" id="check-btn" onclick="checkAnswer()">Prüfen</button>
+                <button class="btn-success" id="next-btn" onclick="nextWord()" style="display:none;">Weiter</button>
+            </div>
+        </div>
+
+        <button class="reset-btn" onclick="resetStats()">Statistiken zurücksetzen</button>
+    </div>
+
+    <script src="vocabulary.js"></script>
+    <script>
+        // Parse vocabulary data
+        const vocabulary = vocabularyData.trim().split('\n').map(line => {
+            const [german, english] = line.split('|');
+            return { german: german.trim(), english: english.trim() };
+        });
+
+        // Shuffle array
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Initialize
+        let currentIndex = 0;
+        let shuffledVocabulary = shuffleArray(vocabulary);
+        let stats = loadStats();
+
+        function loadStats() {
+            const saved = localStorage.getItem('vocabStats');
+            return saved ? JSON.parse(saved) : { correct: 0, incorrect: 0 };
+        }
+
+        function saveStats() {
+            localStorage.setItem('vocabStats', JSON.stringify(stats));
+        }
+
+        function updateStats() {
+            document.getElementById('correct-count').textContent = stats.correct;
+            document.getElementById('incorrect-count').textContent = stats.incorrect;
+
+            const total = stats.correct + stats.incorrect;
+            const rate = total > 0 ? Math.round((stats.correct / total) * 100) : 0;
+            document.getElementById('success-rate').textContent = rate + '%';
+        }
+
+        function displayWord() {
+            const word = shuffledVocabulary[currentIndex];
+            document.getElementById('german-word').textContent = word.german;
+            document.getElementById('progress').textContent =
+                `Frage ${currentIndex + 1} von ${shuffledVocabulary.length}`;
+
+            // Reset input
+            const input = document.getElementById('answer-input');
+            input.value = '';
+            input.className = '';
+            input.disabled = false;
+            input.focus();
+
+            // Reset feedback
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('feedback').className = 'feedback';
+
+            // Reset buttons
+            document.getElementById('check-btn').style.display = 'inline-block';
+            document.getElementById('next-btn').style.display = 'none';
+
+            // Update prev button
+            document.getElementById('prev-btn').disabled = currentIndex === 0;
+        }
+
+        function checkAnswer() {
+            const input = document.getElementById('answer-input');
+
+            // Normalize function: expand contractions, remove punctuation and extra spaces
+            const normalize = (str) => {
+                return str
+                    .toLowerCase()
+                    // Expand common contractions
+                    .replace(/you're/g, 'you are')
+                    .replace(/she's/g, 'she is')
+                    .replace(/he's/g, 'he is')
+                    .replace(/it's/g, 'it is')
+                    .replace(/they're/g, 'they are')
+                    .replace(/we're/g, 'we are')
+                    .replace(/i'm/g, 'i am')
+                    .replace(/isn't/g, 'is not')
+                    .replace(/aren't/g, 'are not')
+                    .replace(/wasn't/g, 'was not')
+                    .replace(/weren't/g, 'were not')
+                    .replace(/don't/g, 'do not')
+                    .replace(/doesn't/g, 'does not')
+                    .replace(/didn't/g, 'did not')
+                    // Remove slashes between words (like "he/she/it")
+                    .replace(/\//g, ' ')
+                    // Remove punctuation
+                    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\?]/g, '')
+                    // Normalize whitespace
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            };
+
+            const userAnswer = normalize(input.value);
+            const correctAnswer = normalize(shuffledVocabulary[currentIndex].english);
+
+            if (!userAnswer) return;
+
+            const isCorrect = userAnswer === correctAnswer;
+
+            // Update UI
+            input.className = isCorrect ? 'correct' : 'incorrect';
+            input.disabled = true;
+
+            const feedback = document.getElementById('feedback');
+            if (isCorrect) {
+                feedback.textContent = 'Richtig!';
+                feedback.className = 'feedback correct';
+                stats.correct++;
+            } else {
+                feedback.textContent = `Falsch! Richtig: ${shuffledVocabulary[currentIndex].english}`;
+                feedback.className = 'feedback incorrect';
+                stats.incorrect++;
+            }
+
+            // Update stats
+            saveStats();
+            updateStats();
+
+            // Update buttons
+            document.getElementById('check-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'inline-block';
+            document.getElementById('next-btn').focus();
+        }
+
+        function nextWord() {
+            if (currentIndex < shuffledVocabulary.length - 1) {
+                currentIndex++;
+                displayWord();
+            } else {
+                // End of vocabulary - reshuffle
+                shuffledVocabulary = shuffleArray(vocabulary);
+                currentIndex = 0;
+                displayWord();
+            }
+        }
+
+        function previousWord() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                displayWord();
+            }
+        }
+
+        function resetStats() {
+            if (confirm('Möchtest du wirklich alle Statistiken zurücksetzen?')) {
+                stats = { correct: 0, incorrect: 0 };
+                saveStats();
+                updateStats();
+            }
+        }
+
+        // Keyboard support
+        document.getElementById('answer-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const checkBtn = document.getElementById('check-btn');
+                const nextBtn = document.getElementById('next-btn');
+
+                if (checkBtn.style.display !== 'none') {
+                    checkAnswer();
+                } else if (nextBtn.style.display !== 'none') {
+                    nextWord();
+                }
+            }
+        });
+
+        // Initialize on load
+        updateStats();
+        displayWord();
+    </script>
+</body>
+</html>
