@@ -2,7 +2,8 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Vokabel Trainer</title>
     <style>
         * {
@@ -238,6 +239,115 @@
 
         .set-selector select:hover {
             border-color: #667eea;
+        }
+
+        /* iPad Portrait Optimization */
+        @media only screen
+        and (min-width: 768px)
+        and (max-width: 1024px)
+        and (orientation: portrait) {
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                padding: 20px;
+                align-items: flex-start;
+                padding-top: 20px;
+            }
+
+            .container {
+                max-width: 700px;
+                padding: 30px;
+                margin: 0 auto;
+            }
+
+            h1 {
+                font-size: 2.2em;
+                margin-bottom: 20px;
+            }
+
+            .set-selector {
+                margin-bottom: 20px;
+            }
+
+            .set-selector label {
+                font-size: 1em;
+                margin-bottom: 8px;
+            }
+
+            .set-selector select {
+                padding: 14px 20px;
+                font-size: 1.1em;
+            }
+
+            .stats {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+
+            .stat-label {
+                font-size: 0.9em;
+            }
+
+            .stat-value {
+                font-size: 1.6em;
+            }
+
+            .card {
+                padding: 30px;
+                border-radius: 15px;
+                margin-bottom: 20px;
+            }
+
+            .progress {
+                font-size: 1em;
+                margin-bottom: 15px;
+            }
+
+            .word {
+                font-size: 2.8em;
+                margin-bottom: 20px;
+            }
+
+            .input-group {
+                margin-bottom: 15px;
+            }
+
+            input[type="text"] {
+                padding: 16px;
+                font-size: 1.3em;
+                border-width: 2px;
+            }
+
+            .feedback {
+                min-height: 30px;
+                font-size: 1.1em;
+                margin-bottom: 15px;
+            }
+
+            .buttons {
+                gap: 12px;
+            }
+
+            button {
+                padding: 16px;
+                font-size: 1em;
+            }
+
+            .reset-btn {
+                margin-top: 20px;
+                padding: 16px;
+                font-size: 1em;
+            }
+        }
+
+        /* Ensure input stays visible when keyboard appears */
+        @supports (-webkit-touch-callout: none) {
+            input[type="text"]:focus {
+                transform: translateY(-20px);
+                transition: transform 0.2s ease;
+            }
         }
     </style>
 </head>
