@@ -2,8 +2,8 @@
 // German-English vocabulary - Basic phrases and words
 
 const vocabularySetBasics = {
-    id: "basics",
-    name: "Basics",
+    id: "page-232",
+    name: "Page 232 - Vocabulary",
     description: "Basic German phrases and everyday words",
     words: `oben; nach oben (im Haus)|upstairs
 unten; nach unten (im Haus)|downstairs
