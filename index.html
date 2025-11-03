@@ -198,17 +198,6 @@
             transform: translateY(-2px);
         }
 
-        .reset-btn {
-            margin-top: 20px;
-            width: 100%;
-            background: #dc3545;
-            color: white;
-        }
-
-        .reset-btn:hover {
-            background: #c82333;
-        }
-
         .set-selector {
             margin-bottom: 30px;
             text-align: center;
@@ -334,12 +323,6 @@
                 padding: 16px;
                 font-size: 1em;
             }
-
-            .reset-btn {
-                margin-top: 20px;
-                padding: 16px;
-                font-size: 1em;
-            }
         }
 
         /* Ensure input stays visible when keyboard appears */
@@ -348,6 +331,69 @@
                 transform: translateY(-20px);
                 transition: transform 0.2s ease;
             }
+        }
+
+        /* Completion screen styles */
+        .completion-screen {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .completion-screen.active {
+            display: block;
+        }
+
+        .completion-screen h2 {
+            color: #28a745;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .completion-screen .completion-message {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .completion-screen .session-stats {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .completion-screen .session-stats h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .completion-screen .session-stats p {
+            font-size: 1.1em;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .completion-screen .new-session-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .completion-screen .new-session-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .card.hidden {
+            display: none;
         }
     </style>
 </head>
@@ -358,6 +404,7 @@
         <div class="set-selector">
             <label for="set-select">Vokabel-Set auswählen:</label>
             <select id="set-select" onchange="onSetChange()">
+                <option value="random-5">5 Zufällige Wörter</option>
                 <option value="all">Alle Sets</option>
             </select>
         </div>
@@ -377,7 +424,7 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card" id="quiz-card">
             <div class="progress" id="progress">Frage 1 von 30</div>
             <div class="word" id="german-word">Laden...</div>
 
@@ -402,7 +449,19 @@
             </div>
         </div>
 
-        <button class="reset-btn" onclick="resetStats()">Statistiken zurücksetzen</button>
+        <div class="completion-screen" id="completion-screen">
+            <h2>🎉 Session abgeschlossen!</h2>
+            <p class="completion-message">Glückwunsch! Du hast alle Vokabeln dieser Session erfolgreich gemeistert.</p>
+
+            <div class="session-stats">
+                <h3>Session Statistiken</h3>
+                <p><strong>Korrekte Antworten:</strong> <span id="session-correct">0</span></p>
+                <p><strong>Falsche Antworten:</strong> <span id="session-incorrect">0</span></p>
+                <p><strong>Erfolgsquote:</strong> <span id="session-rate">0%</span></p>
+            </div>
+
+            <button class="new-session-btn" onclick="startNewSession()">Neue Session starten</button>
+        </div>
     </div>
 
 <script src="page-230.js"></script>
@@ -417,7 +476,23 @@
         function loadVocabulary(setId) {
             let selectedSets = [];
 
-            if (setId === 'all') {
+            if (setId === 'random-5') {
+                // Special case: load all vocabulary, shuffle, and return only 5
+                selectedSets = vocabularySets;
+                const allWords = selectedSets
+                    .map(set => set.words)
+                    .join('\n');
+
+                const parsedWords = allWords.trim().split('\n').map(line => {
+                    const [german, english] = line.split('|');
+                    return { german: german.trim(), english: english.trim() };
+                });
+
+                // Shuffle all words
+                const shuffled = shuffleArray(parsedWords);
+                // Return only first 5
+                return shuffled.slice(0, 5);
+            } else if (setId === 'all') {
                 selectedSets = vocabularySets;
             } else {
                 selectedSets = vocabularySets.filter(set => set.id === setId);
@@ -458,12 +533,21 @@
             // Save selection
             localStorage.setItem('selectedVocabularySet', selectedSet);
 
-            // Reload vocabulary
+            // Reload vocabulary and start new session
             vocabulary = loadVocabulary(selectedSet);
             shuffledVocabulary = shuffleArray(vocabulary);
-            currentIndex = 0;
+            remainingWords = [...shuffledVocabulary];
+            masteredWords.clear();
+            stats = { correct: 0, incorrect: 0 };
 
-            // Reset and display first word
+            // Update UI
+            updateStats();
+
+            // Ensure quiz card is visible, completion screen hidden
+            document.getElementById('completion-screen').classList.remove('active');
+            document.getElementById('quiz-card').classList.remove('hidden');
+
+            // Display first word
             displayWord();
         }
 
@@ -480,19 +564,11 @@
             return shuffled;
         }
 
-        // Initialize
-        let currentIndex = 0;
+        // Initialize session-based tracking
         let shuffledVocabulary = shuffleArray(vocabulary);
-        let stats = loadStats();
-
-        function loadStats() {
-            const saved = localStorage.getItem('vocabStats');
-            return saved ? JSON.parse(saved) : { correct: 0, incorrect: 0 };
-        }
-
-        function saveStats() {
-            localStorage.setItem('vocabStats', JSON.stringify(stats));
-        }
+        let remainingWords = [...shuffledVocabulary]; // Queue of words to be answered correctly
+        let masteredWords = new Set(); // Track words answered correctly
+        let stats = { correct: 0, incorrect: 0 };
 
         function updateStats() {
             document.getElementById('correct-count').textContent = stats.correct;
@@ -504,10 +580,20 @@
         }
 
         function displayWord() {
-            const word = shuffledVocabulary[currentIndex];
+            // Check if session is complete
+            if (remainingWords.length === 0) {
+                showCompletionScreen();
+                return;
+            }
+
+            const word = remainingWords[0];
             document.getElementById('german-word').textContent = word.german;
+
+            // Show remaining words count
+            const totalWords = shuffledVocabulary.length;
+            const remainingCount = remainingWords.length;
             document.getElementById('progress').textContent =
-                `Frage ${currentIndex + 1} von ${shuffledVocabulary.length}`;
+                `${remainingCount} von ${totalWords} verbleibend`;
 
             // Reset input
             const input = document.getElementById('answer-input');
@@ -524,8 +610,8 @@
             document.getElementById('check-btn').style.display = 'inline-block';
             document.getElementById('next-btn').style.display = 'none';
 
-            // Update prev button
-            document.getElementById('prev-btn').disabled = currentIndex === 0;
+            // Disable prev button in session-based mode
+            document.getElementById('prev-btn').disabled = true;
         }
 
         function checkAnswer() {
@@ -559,8 +645,9 @@
                     .trim();
             };
 
+            const currentWord = remainingWords[0];
             const userAnswer = normalize(input.value);
-            const correctAnswer = normalize(shuffledVocabulary[currentIndex].english);
+            const correctAnswer = normalize(currentWord.english);
 
             if (!userAnswer) return;
 
@@ -575,14 +662,21 @@
                 feedback.textContent = 'Richtig!';
                 feedback.className = 'feedback correct';
                 stats.correct++;
+
+                // Remove from remaining words and add to mastered
+                remainingWords.shift();
+                masteredWords.add(currentWord.german);
             } else {
-                feedback.textContent = `Falsch! Richtig: ${shuffledVocabulary[currentIndex].english}`;
+                feedback.textContent = `Falsch! Richtig: ${currentWord.english}`;
                 feedback.className = 'feedback incorrect';
                 stats.incorrect++;
+
+                // Move word to end of queue (remove from front, add to back)
+                remainingWords.shift();
+                remainingWords.push(currentWord);
             }
 
             // Update stats
-            saveStats();
             updateStats();
 
             // Update buttons
@@ -592,30 +686,45 @@
         }
 
         function nextWord() {
-            if (currentIndex < shuffledVocabulary.length - 1) {
-                currentIndex++;
-                displayWord();
-            } else {
-                // End of vocabulary - reshuffle
-                shuffledVocabulary = shuffleArray(vocabulary);
-                currentIndex = 0;
-                displayWord();
-            }
+            // Simply display the next word (or completion screen if done)
+            displayWord();
         }
 
         function previousWord() {
-            if (currentIndex > 0) {
-                currentIndex--;
-                displayWord();
-            }
+            // Previous button disabled in session-based mode
+            // No action needed
         }
 
-        function resetStats() {
-            if (confirm('Möchtest du wirklich alle Statistiken zurücksetzen?')) {
-                stats = { correct: 0, incorrect: 0 };
-                saveStats();
-                updateStats();
-            }
+        function showCompletionScreen() {
+            // Hide quiz card, show completion screen
+            document.getElementById('quiz-card').classList.add('hidden');
+            document.getElementById('completion-screen').classList.add('active');
+
+            // Update completion stats
+            document.getElementById('session-correct').textContent = stats.correct;
+            document.getElementById('session-incorrect').textContent = stats.incorrect;
+
+            const total = stats.correct + stats.incorrect;
+            const rate = total > 0 ? Math.round((stats.correct / total) * 100) : 0;
+            document.getElementById('session-rate').textContent = rate + '%';
+        }
+
+        function startNewSession() {
+            // Reset session data
+            shuffledVocabulary = shuffleArray(vocabulary);
+            remainingWords = [...shuffledVocabulary];
+            masteredWords.clear();
+            stats = { correct: 0, incorrect: 0 };
+
+            // Update UI
+            updateStats();
+
+            // Hide completion screen, show quiz card
+            document.getElementById('completion-screen').classList.remove('active');
+            document.getElementById('quiz-card').classList.remove('hidden');
+
+            // Display first word
+            displayWord();
         }
 
         // Keyboard support
