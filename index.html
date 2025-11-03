@@ -14,7 +14,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #7c3aed 0%, #ec4899 50%, #f59e0b 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -24,9 +24,9 @@
 
         .container {
             background: white;
-            border-radius: 20px;
+            border-radius: 30px;
             padding: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
             max-width: 600px;
             width: 100%;
         }
@@ -40,40 +40,26 @@
 
         .stats {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
+            align-items: center;
             margin-bottom: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
+            padding: 25px;
+            background: #fef9e7;
+            border-radius: 20px;
         }
 
-        .stat {
-            text-align: center;
+        .smiley {
+            font-size: 4em;
+            transition: transform 0.3s ease;
         }
 
-        .stat-label {
-            font-size: 0.85em;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .stat-value {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #667eea;
-        }
-
-        .stat-value.correct {
-            color: #28a745;
-        }
-
-        .stat-value.incorrect {
-            color: #dc3545;
+        .smiley:hover {
+            transform: scale(1.1);
         }
 
         .card {
-            background: #f8f9fa;
-            border-radius: 15px;
+            background: #fef3c7;
+            border-radius: 25px;
             padding: 40px;
             margin-bottom: 20px;
             text-align: center;
@@ -81,6 +67,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
 
         .word {
@@ -104,25 +91,26 @@
             width: 100%;
             padding: 15px;
             font-size: 1.2em;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            border: 3px solid #ddd;
+            border-radius: 15px;
             text-align: center;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
         }
 
         input[type="text"]:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
         }
 
         input[type="text"].correct {
-            border-color: #28a745;
-            background-color: #d4edda;
+            border-color: #10b981;
+            background-color: #d1fae5;
         }
 
         input[type="text"].incorrect {
-            border-color: #dc3545;
-            background-color: #f8d7da;
+            border-color: #ef4444;
+            background-color: #fee2e2;
         }
 
         .feedback {
@@ -133,11 +121,11 @@
         }
 
         .feedback.correct {
-            color: #28a745;
+            color: #10b981;
         }
 
         .feedback.incorrect {
-            color: #dc3545;
+            color: #f59e0b;
         }
 
         .buttons {
@@ -151,51 +139,57 @@
             font-size: 1em;
             font-weight: bold;
             border: none;
-            border-radius: 10px;
+            border-radius: 15px;
             cursor: pointer;
             transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .btn-primary {
-            background: #667eea;
+            background: #7c3aed;
             color: white;
         }
 
         .btn-primary:hover {
-            background: #5568d3;
+            background: #6d28d9;
             transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
 
         .btn-primary:disabled {
             background: #ccc;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
 
         .btn-secondary {
-            background: #6c757d;
+            background: #94a3b8;
             color: white;
         }
 
         .btn-secondary:hover {
-            background: #5a6268;
+            background: #64748b;
             transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
 
         .btn-secondary:disabled {
             background: #ccc;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
 
         .btn-success {
-            background: #28a745;
+            background: #10b981;
             color: white;
         }
 
         .btn-success:hover {
-            background: #218838;
+            background: #059669;
             transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
 
         .set-selector {
@@ -214,20 +208,21 @@
             width: 100%;
             padding: 12px 20px;
             font-size: 1em;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            border: 3px solid #ddd;
+            border-radius: 15px;
             background: white;
             cursor: pointer;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
         }
 
         .set-selector select:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
         }
 
         .set-selector select:hover {
-            border-color: #667eea;
+            border-color: #7c3aed;
         }
 
         /* iPad Portrait Optimization */
@@ -342,58 +337,140 @@
 
         .completion-screen.active {
             display: block;
+            animation: fadeInBounce 0.6s ease-out;
         }
 
         .completion-screen h2 {
-            color: #28a745;
+            color: #10b981;
             font-size: 2.5em;
             margin-bottom: 20px;
+            animation: bounce 0.8s ease-in-out;
         }
 
         .completion-screen .completion-message {
-            font-size: 1.2em;
-            color: #666;
+            font-size: 1.3em;
+            color: #333;
             margin-bottom: 30px;
+            font-weight: 600;
         }
 
         .completion-screen .session-stats {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
+            background: #d1fae5;
+            border-radius: 20px;
+            padding: 25px;
             margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
 
         .completion-screen .session-stats h3 {
             color: #333;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            font-size: 1.3em;
         }
 
         .completion-screen .session-stats p {
             font-size: 1.1em;
-            color: #666;
-            margin: 10px 0;
+            color: #333;
+            margin: 12px 0;
+            font-weight: 500;
         }
 
         .completion-screen .new-session-btn {
             width: 100%;
-            padding: 15px;
-            font-size: 1.2em;
+            padding: 18px;
+            font-size: 1.3em;
             font-weight: bold;
-            background: #667eea;
+            background: #7c3aed;
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.3);
         }
 
         .completion-screen .new-session-btn:hover {
-            background: #5568d3;
-            transform: translateY(-2px);
+            background: #6d28d9;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
         }
 
         .card.hidden {
             display: none;
+        }
+
+        /* Animations for kid-friendly feedback */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
+            20%, 40%, 60%, 80% { transform: translateX(8px); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes fadeInBounce {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .bounce {
+            animation: bounce 0.4s ease-in-out;
+        }
+
+        .fade-in-bounce {
+            animation: fadeInBounce 0.5s ease-out;
+        }
+
+        /* Progress bar styles */
+        .progress-container {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar-wrapper {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: #7c3aed;
+            border-radius: 15px;
+            transition: width 0.6s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
         }
     </style>
 </head>
@@ -410,22 +487,16 @@
         </div>
 
         <div class="stats">
-            <div class="stat">
-                <div class="stat-label">Korrekt</div>
-                <div class="stat-value correct" id="correct-count">0</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">Falsch</div>
-                <div class="stat-value incorrect" id="incorrect-count">0</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">Erfolgsquote</div>
-                <div class="stat-value" id="success-rate">0%</div>
-            </div>
+            <div class="smiley" id="smiley">😊</div>
         </div>
 
         <div class="card" id="quiz-card">
-            <div class="progress" id="progress">Frage 1 von 30</div>
+            <div class="progress-container">
+                <div class="progress-bar-wrapper">
+                    <div class="progress-bar-fill" id="progress-bar"></div>
+                </div>
+                <div class="progress-text" id="progress-text">5 von 5 verbleibend</div>
+            </div>
             <div class="word" id="german-word">Laden...</div>
 
             <div class="input-group">
@@ -450,17 +521,17 @@
         </div>
 
         <div class="completion-screen" id="completion-screen">
-            <h2>🎉 Session abgeschlossen!</h2>
-            <p class="completion-message">Glückwunsch! Du hast alle Vokabeln dieser Session erfolgreich gemeistert.</p>
+            <h2>🎉 ⭐ Super gemacht! ⭐ 🎉</h2>
+            <p class="completion-message">Fantastisch! Du hast alle Vokabeln gemeistert! 🌟</p>
 
             <div class="session-stats">
-                <h3>Session Statistiken</h3>
-                <p><strong>Korrekte Antworten:</strong> <span id="session-correct">0</span></p>
-                <p><strong>Falsche Antworten:</strong> <span id="session-incorrect">0</span></p>
-                <p><strong>Erfolgsquote:</strong> <span id="session-rate">0%</span></p>
+                <h3>📊 Deine Statistiken</h3>
+                <p><strong>✅ Korrekte Antworten:</strong> <span id="session-correct">0</span></p>
+                <p><strong>❌ Falsche Antworten:</strong> <span id="session-incorrect">0</span></p>
+                <p><strong>🎯 Erfolgsquote:</strong> <span id="session-rate">0%</span></p>
             </div>
 
-            <button class="new-session-btn" onclick="startNewSession()">Neue Session starten</button>
+            <button class="new-session-btn" onclick="startNewSession()">🚀 Neue Session starten</button>
         </div>
     </div>
 
@@ -571,12 +642,20 @@
         let stats = { correct: 0, incorrect: 0 };
 
         function updateStats() {
-            document.getElementById('correct-count').textContent = stats.correct;
-            document.getElementById('incorrect-count').textContent = stats.incorrect;
-
             const total = stats.correct + stats.incorrect;
             const rate = total > 0 ? Math.round((stats.correct / total) * 100) : 0;
-            document.getElementById('success-rate').textContent = rate + '%';
+
+            let emoji = '😊'; // Default starting happy
+            if (total > 0) {
+                if (rate === 100) emoji = '😄';
+                else if (rate >= 90) emoji = '😊';
+                else if (rate >= 70) emoji = '🙂';
+                else if (rate >= 50) emoji = '😐';
+                else if (rate >= 30) emoji = '🙁';
+                else emoji = '😢';
+            }
+
+            document.getElementById('smiley').textContent = emoji;
         }
 
         function displayWord() {
@@ -589,10 +668,17 @@
             const word = remainingWords[0];
             document.getElementById('german-word').textContent = word.german;
 
-            // Show remaining words count
+            // Update progress bar and text
             const totalWords = shuffledVocabulary.length;
             const remainingCount = remainingWords.length;
-            document.getElementById('progress').textContent =
+            const completedCount = totalWords - remainingCount;
+            const progressPercent = (completedCount / totalWords) * 100;
+
+            const progressBar = document.getElementById('progress-bar');
+            progressBar.style.width = progressPercent + '%';
+            progressBar.textContent = completedCount > 0 ? Math.round(progressPercent) + '%' : '';
+
+            document.getElementById('progress-text').textContent =
                 `${remainingCount} von ${totalWords} verbleibend`;
 
             // Reset input
@@ -647,29 +733,56 @@
 
             const currentWord = remainingWords[0];
             const userAnswer = normalize(input.value);
-            const correctAnswer = normalize(currentWord.english);
+
+            // Split correct answer by "/" to handle alternatives (e.g., "a lot of / lots of")
+            const correctAnswerVariants = currentWord.english
+                .split('/')
+                .map(variant => normalize(variant.trim()));
 
             if (!userAnswer) return;
 
-            const isCorrect = userAnswer === correctAnswer;
+            // Check if user answer matches any of the acceptable variants
+            const isCorrect = correctAnswerVariants.some(variant => userAnswer === variant);
+
+            // Motivational messages
+            const correctMessages = ['Super!', 'Perfekt!', 'Fantastisch!', 'Klasse!', 'Toll gemacht!', 'Genau richtig!', 'Sehr gut!'];
+            const incorrectMessages = ['Fast richtig!', 'Versuch\'s nochmal!', 'So nah dran!', 'Nicht aufgeben!', 'Weiter so!'];
 
             // Update UI
-            input.className = isCorrect ? 'correct' : 'incorrect';
+            input.className = isCorrect ? 'correct bounce' : 'incorrect shake';
             input.disabled = true;
 
             const feedback = document.getElementById('feedback');
+            const card = document.getElementById('quiz-card');
+
             if (isCorrect) {
-                feedback.textContent = 'Richtig!';
-                feedback.className = 'feedback correct';
+                // Random motivational message for correct answer
+                const randomMessage = correctMessages[Math.floor(Math.random() * correctMessages.length)];
+                feedback.textContent = randomMessage;
+                feedback.className = 'feedback correct fade-in-bounce';
                 stats.correct++;
+
+                // Bounce animation
+                input.classList.add('bounce');
+                setTimeout(() => input.classList.remove('bounce'), 400);
 
                 // Remove from remaining words and add to mastered
                 remainingWords.shift();
                 masteredWords.add(currentWord.german);
             } else {
-                feedback.textContent = `Falsch! Richtig: ${currentWord.english}`;
-                feedback.className = 'feedback incorrect';
+                // Random encouraging message for incorrect answer
+                const randomMessage = incorrectMessages[Math.floor(Math.random() * incorrectMessages.length)];
+                feedback.textContent = `${randomMessage} Richtig: ${currentWord.english}`;
+                feedback.className = 'feedback incorrect fade-in-bounce';
                 stats.incorrect++;
+
+                // Shake animations
+                input.classList.add('shake');
+                card.classList.add('shake');
+                setTimeout(() => {
+                    input.classList.remove('shake');
+                    card.classList.remove('shake');
+                }, 500);
 
                 // Move word to end of queue (remove from front, add to back)
                 remainingWords.shift();
