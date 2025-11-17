@@ -401,14 +401,24 @@
 
         /* Animations for kid-friendly feedback */
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
-            20%, 40%, 60%, 80% { transform: translateX(8px); }
+            0%, 100% {
+                transform: translateX(0);
+            }
+            10%, 30%, 50%, 70%, 90% {
+                transform: translateX(-8px);
+            }
+            20%, 40%, 60%, 80% {
+                transform: translateX(8px);
+            }
         }
 
         @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         @keyframes fadeInBounce {
@@ -475,32 +485,32 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Vokabel Trainer</h1>
+<div class="container">
+    <h1>Vokabel Trainer</h1>
 
-        <div class="set-selector">
-            <label for="set-select">Vokabel-Set auswählen:</label>
-            <select id="set-select" onchange="onSetChange()">
-                <option value="random-5">5 Zufällige Wörter</option>
-                <option value="all">Alle Sets</option>
-            </select>
-        </div>
+    <div class="set-selector">
+        <label for="set-select">Vokabel-Set auswählen:</label>
+        <select id="set-select" onchange="onSetChange()">
+            <option value="random-5">5 Zufällige Wörter</option>
+            <option value="all">Alle Sets</option>
+        </select>
+    </div>
 
-        <div class="stats">
-            <div class="smiley" id="smiley">😊</div>
-        </div>
+    <div class="stats">
+        <div class="smiley" id="smiley">😊</div>
+    </div>
 
-        <div class="card" id="quiz-card">
-            <div class="progress-container">
-                <div class="progress-bar-wrapper">
-                    <div class="progress-bar-fill" id="progress-bar"></div>
-                </div>
-                <div class="progress-text" id="progress-text">5 von 5 verbleibend</div>
+    <div class="card" id="quiz-card">
+        <div class="progress-container">
+            <div class="progress-bar-wrapper">
+                <div class="progress-bar-fill" id="progress-bar"></div>
             </div>
-            <div class="word" id="german-word">Laden...</div>
+            <div class="progress-text" id="progress-text">5 von 5 verbleibend</div>
+        </div>
+        <div class="word" id="german-word">Laden...</div>
 
-            <div class="input-group">
-                <input
+        <div class="input-group">
+            <input
                     type="text"
                     id="answer-input"
                     placeholder="Gib die englische Übersetzung ein..."
@@ -508,356 +518,357 @@
                     autocorrect="off"
                     autocapitalize="off"
                     spellcheck="false"
-                >
-            </div>
-
-            <div class="feedback" id="feedback"></div>
-
-            <div class="buttons">
-                <button class="btn-secondary" id="prev-btn" onclick="previousWord()">Zurück</button>
-                <button class="btn-primary" id="check-btn" onclick="checkAnswer()">Prüfen</button>
-                <button class="btn-success" id="next-btn" onclick="nextWord()" style="display:none;">Weiter</button>
-            </div>
+            >
         </div>
 
-        <div class="completion-screen" id="completion-screen">
-            <h2>🎉 ⭐ Super gemacht! ⭐ 🎉</h2>
-            <p class="completion-message">Fantastisch! Du hast alle Vokabeln gemeistert! 🌟</p>
+        <div class="feedback" id="feedback"></div>
 
-            <div class="session-stats">
-                <h3>📊 Deine Statistiken</h3>
-                <p><strong>✅ Korrekte Antworten:</strong> <span id="session-correct">0</span></p>
-                <p><strong>❌ Falsche Antworten:</strong> <span id="session-incorrect">0</span></p>
-                <p><strong>🎯 Erfolgsquote:</strong> <span id="session-rate">0%</span></p>
-            </div>
-
-            <button class="new-session-btn" onclick="startNewSession()">🚀 Neue Session starten</button>
+        <div class="buttons">
+            <button class="btn-secondary" id="prev-btn" onclick="previousWord()">Zurück</button>
+            <button class="btn-primary" id="check-btn" onclick="checkAnswer()">Prüfen</button>
+            <button class="btn-success" id="next-btn" onclick="nextWord()" style="display:none;">Weiter</button>
         </div>
     </div>
 
+    <div class="completion-screen" id="completion-screen">
+        <h2>🎉 ⭐ Super gemacht! ⭐ 🎉</h2>
+        <p class="completion-message">Fantastisch! Du hast alle Vokabeln gemeistert! 🌟</p>
+
+        <div class="session-stats">
+            <h3>📊 Deine Statistiken</h3>
+            <p><strong>✅ Korrekte Antworten:</strong> <span id="session-correct">0</span></p>
+            <p><strong>❌ Falsche Antworten:</strong> <span id="session-incorrect">0</span></p>
+            <p><strong>🎯 Erfolgsquote:</strong> <span id="session-rate">0%</span></p>
+        </div>
+
+        <button class="new-session-btn" onclick="startNewSession()">🚀 Neue Session starten</button>
+    </div>
+</div>
+
 <script src="page-230.js"></script>
-    <script src="page-231.js"></script>
-    <script src="page-232.js"></script>
-    <script src="page-233.js"></script>
-    <script>
-        // Registry of all available vocabulary sets
-        const vocabularySets = [vocabularySetPage230, vocabularySetPage231, vocabularySetBasics, vocabularySetPage233];
+<script src="page-231.js"></script>
+<script src="page-232.js"></script>
+<script src="page-233.js"></script>
+<script src="page-234.js"></script>
+<script>
+    // Registry of all available vocabulary sets
+    const vocabularySets = [vocabularySetPage230, vocabularySetPage231, vocabularySetBasics, vocabularySetPage233, vocabularySetPage234];
 
-        // Parse vocabulary from selected set(s)
-        function loadVocabulary(setId) {
-            let selectedSets = [];
+    // Parse vocabulary from selected set(s)
+    function loadVocabulary(setId) {
+        let selectedSets = [];
 
-            if (setId === 'random-5') {
-                // Special case: load all vocabulary, shuffle, and return only 5
-                selectedSets = vocabularySets;
-                const allWords = selectedSets
-                    .map(set => set.words)
-                    .join('\n');
-
-                const parsedWords = allWords.trim().split('\n').map(line => {
-                    const [german, english] = line.split('|');
-                    return { german: german.trim(), english: english.trim() };
-                });
-
-                // Shuffle all words
-                const shuffled = shuffleArray(parsedWords);
-                // Return only first 5
-                return shuffled.slice(0, 5);
-            } else if (setId === 'all') {
-                selectedSets = vocabularySets;
-            } else {
-                selectedSets = vocabularySets.filter(set => set.id === setId);
-            }
-
-            // Combine and parse all words from selected sets
+        if (setId === 'random-5') {
+            // Special case: load all vocabulary, shuffle, and return only 5
+            selectedSets = vocabularySets;
             const allWords = selectedSets
                 .map(set => set.words)
                 .join('\n');
 
-            return allWords.trim().split('\n').map(line => {
+            const parsedWords = allWords.trim().split('\n').map(line => {
                 const [german, english] = line.split('|');
-                return { german: german.trim(), english: english.trim() };
-            });
-        }
-
-        // Initialize dropdown with all available sets
-        function initializeSetSelector() {
-            const select = document.getElementById('set-select');
-
-            vocabularySets.forEach(set => {
-                const option = document.createElement('option');
-                option.value = set.id;
-                option.textContent = set.name;
-                select.appendChild(option);
+                return {german: german.trim(), english: english.trim()};
             });
 
-            // Restore saved selection
-            const savedSet = localStorage.getItem('selectedVocabularySet') || 'all';
-            select.value = savedSet;
+            // Shuffle all words
+            const shuffled = shuffleArray(parsedWords);
+            // Return only first 5
+            return shuffled.slice(0, 5);
+        } else if (setId === 'all') {
+            selectedSets = vocabularySets;
+        } else {
+            selectedSets = vocabularySets.filter(set => set.id === setId);
         }
 
-        // Handle set change
-        function onSetChange() {
-            const select = document.getElementById('set-select');
-            const selectedSet = select.value;
+        // Combine and parse all words from selected sets
+        const allWords = selectedSets
+            .map(set => set.words)
+            .join('\n');
 
-            // Save selection
-            localStorage.setItem('selectedVocabularySet', selectedSet);
+        return allWords.trim().split('\n').map(line => {
+            const [german, english] = line.split('|');
+            return {german: german.trim(), english: english.trim()};
+        });
+    }
 
-            // Reload vocabulary and start new session
-            vocabulary = loadVocabulary(selectedSet);
-            shuffledVocabulary = shuffleArray(vocabulary);
-            remainingWords = [...shuffledVocabulary];
-            masteredWords.clear();
-            stats = { correct: 0, incorrect: 0 };
+    // Initialize dropdown with all available sets
+    function initializeSetSelector() {
+        const select = document.getElementById('set-select');
 
-            // Update UI
-            updateStats();
-
-            // Ensure quiz card is visible, completion screen hidden
-            document.getElementById('completion-screen').classList.remove('active');
-            document.getElementById('quiz-card').classList.remove('hidden');
-
-            // Display first word
-            displayWord();
-        }
-
-        // Load initial vocabulary
-        let vocabulary = loadVocabulary(localStorage.getItem('selectedVocabularySet') || 'all');
-
-        // Shuffle array
-        function shuffleArray(array) {
-            const shuffled = [...array];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            return shuffled;
-        }
-
-        // Initialize session-based tracking
-        let shuffledVocabulary = shuffleArray(vocabulary);
-        let remainingWords = [...shuffledVocabulary]; // Queue of words to be answered correctly
-        let masteredWords = new Set(); // Track words answered correctly
-        let stats = { correct: 0, incorrect: 0 };
-
-        function updateStats() {
-            const total = stats.correct + stats.incorrect;
-            const rate = total > 0 ? Math.round((stats.correct / total) * 100) : 0;
-
-            let emoji = '😊'; // Default starting happy
-            if (total > 0) {
-                if (rate === 100) emoji = '😄';
-                else if (rate >= 90) emoji = '😊';
-                else if (rate >= 70) emoji = '🙂';
-                else if (rate >= 50) emoji = '😐';
-                else if (rate >= 30) emoji = '🙁';
-                else emoji = '😢';
-            }
-
-            document.getElementById('smiley').textContent = emoji;
-        }
-
-        function displayWord() {
-            // Check if session is complete
-            if (remainingWords.length === 0) {
-                showCompletionScreen();
-                return;
-            }
-
-            const word = remainingWords[0];
-            document.getElementById('german-word').textContent = word.german;
-
-            // Update progress bar and text
-            const totalWords = shuffledVocabulary.length;
-            const remainingCount = remainingWords.length;
-            const completedCount = totalWords - remainingCount;
-            const progressPercent = (completedCount / totalWords) * 100;
-
-            const progressBar = document.getElementById('progress-bar');
-            progressBar.style.width = progressPercent + '%';
-            progressBar.textContent = completedCount > 0 ? Math.round(progressPercent) + '%' : '';
-
-            document.getElementById('progress-text').textContent =
-                `${remainingCount} von ${totalWords} verbleibend`;
-
-            // Reset input
-            const input = document.getElementById('answer-input');
-            input.value = '';
-            input.className = '';
-            input.disabled = false;
-            input.focus();
-
-            // Reset feedback
-            document.getElementById('feedback').textContent = '';
-            document.getElementById('feedback').className = 'feedback';
-
-            // Reset buttons
-            document.getElementById('check-btn').style.display = 'inline-block';
-            document.getElementById('next-btn').style.display = 'none';
-
-            // Disable prev button in session-based mode
-            document.getElementById('prev-btn').disabled = true;
-        }
-
-        function checkAnswer() {
-            const input = document.getElementById('answer-input');
-
-            // Normalize function: expand contractions, remove punctuation and extra spaces
-            const normalize = (str) => {
-                return str
-                    .toLowerCase()
-                    // Expand common contractions
-                    .replace(/you're/g, 'you are')
-                    .replace(/she's/g, 'she is')
-                    .replace(/he's/g, 'he is')
-                    .replace(/it's/g, 'it is')
-                    .replace(/they're/g, 'they are')
-                    .replace(/we're/g, 'we are')
-                    .replace(/i'm/g, 'i am')
-                    .replace(/isn't/g, 'is not')
-                    .replace(/aren't/g, 'are not')
-                    .replace(/wasn't/g, 'was not')
-                    .replace(/weren't/g, 'were not')
-                    .replace(/don't/g, 'do not')
-                    .replace(/doesn't/g, 'does not')
-                    .replace(/didn't/g, 'did not')
-                    // Remove slashes between words (like "he/she/it")
-                    .replace(/\//g, ' ')
-                    // Remove punctuation
-                    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\?]/g, '')
-                    // Normalize whitespace
-                    .replace(/\s+/g, ' ')
-                    .trim();
-            };
-
-            const currentWord = remainingWords[0];
-            const userAnswer = normalize(input.value);
-
-            // Split correct answer by "/" to handle alternatives (e.g., "a lot of / lots of")
-            const correctAnswerVariants = currentWord.english
-                .split('/')
-                .map(variant => normalize(variant.trim()));
-
-            if (!userAnswer) return;
-
-            // Check if user answer matches any of the acceptable variants
-            const isCorrect = correctAnswerVariants.some(variant => userAnswer === variant);
-
-            // Motivational messages
-            const correctMessages = ['Super!', 'Perfekt!', 'Fantastisch!', 'Klasse!', 'Toll gemacht!', 'Genau richtig!', 'Sehr gut!'];
-            const incorrectMessages = ['Fast richtig!', 'Versuch\'s nochmal!', 'So nah dran!', 'Nicht aufgeben!', 'Weiter so!'];
-
-            // Update UI
-            input.className = isCorrect ? 'correct bounce' : 'incorrect shake';
-            input.disabled = true;
-
-            const feedback = document.getElementById('feedback');
-            const card = document.getElementById('quiz-card');
-
-            if (isCorrect) {
-                // Random motivational message for correct answer
-                const randomMessage = correctMessages[Math.floor(Math.random() * correctMessages.length)];
-                feedback.textContent = randomMessage;
-                feedback.className = 'feedback correct fade-in-bounce';
-                stats.correct++;
-
-                // Bounce animation
-                input.classList.add('bounce');
-                setTimeout(() => input.classList.remove('bounce'), 400);
-
-                // Remove from remaining words and add to mastered
-                remainingWords.shift();
-                masteredWords.add(currentWord.german);
-            } else {
-                // Random encouraging message for incorrect answer
-                const randomMessage = incorrectMessages[Math.floor(Math.random() * incorrectMessages.length)];
-                feedback.textContent = `${randomMessage} Richtig: ${currentWord.english}`;
-                feedback.className = 'feedback incorrect fade-in-bounce';
-                stats.incorrect++;
-
-                // Shake animations
-                input.classList.add('shake');
-                card.classList.add('shake');
-                setTimeout(() => {
-                    input.classList.remove('shake');
-                    card.classList.remove('shake');
-                }, 500);
-
-                // Move word to end of queue (remove from front, add to back)
-                remainingWords.shift();
-                remainingWords.push(currentWord);
-            }
-
-            // Update stats
-            updateStats();
-
-            // Update buttons
-            document.getElementById('check-btn').style.display = 'none';
-            document.getElementById('next-btn').style.display = 'inline-block';
-            document.getElementById('next-btn').focus();
-        }
-
-        function nextWord() {
-            // Simply display the next word (or completion screen if done)
-            displayWord();
-        }
-
-        function previousWord() {
-            // Previous button disabled in session-based mode
-            // No action needed
-        }
-
-        function showCompletionScreen() {
-            // Hide quiz card, show completion screen
-            document.getElementById('quiz-card').classList.add('hidden');
-            document.getElementById('completion-screen').classList.add('active');
-
-            // Update completion stats
-            document.getElementById('session-correct').textContent = stats.correct;
-            document.getElementById('session-incorrect').textContent = stats.incorrect;
-
-            const total = stats.correct + stats.incorrect;
-            const rate = total > 0 ? Math.round((stats.correct / total) * 100) : 0;
-            document.getElementById('session-rate').textContent = rate + '%';
-        }
-
-        function startNewSession() {
-            // Reset session data
-            shuffledVocabulary = shuffleArray(vocabulary);
-            remainingWords = [...shuffledVocabulary];
-            masteredWords.clear();
-            stats = { correct: 0, incorrect: 0 };
-
-            // Update UI
-            updateStats();
-
-            // Hide completion screen, show quiz card
-            document.getElementById('completion-screen').classList.remove('active');
-            document.getElementById('quiz-card').classList.remove('hidden');
-
-            // Display first word
-            displayWord();
-        }
-
-        // Keyboard support
-        document.getElementById('answer-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const checkBtn = document.getElementById('check-btn');
-                const nextBtn = document.getElementById('next-btn');
-
-                if (checkBtn.style.display !== 'none') {
-                    checkAnswer();
-                } else if (nextBtn.style.display !== 'none') {
-                    nextWord();
-                }
-            }
+        vocabularySets.forEach(set => {
+            const option = document.createElement('option');
+            option.value = set.id;
+            option.textContent = set.name;
+            select.appendChild(option);
         });
 
-        // Initialize on load
-        initializeSetSelector();
+        // Restore saved selection
+        const savedSet = localStorage.getItem('selectedVocabularySet') || 'all';
+        select.value = savedSet;
+    }
+
+    // Handle set change
+    function onSetChange() {
+        const select = document.getElementById('set-select');
+        const selectedSet = select.value;
+
+        // Save selection
+        localStorage.setItem('selectedVocabularySet', selectedSet);
+
+        // Reload vocabulary and start new session
+        vocabulary = loadVocabulary(selectedSet);
+        shuffledVocabulary = shuffleArray(vocabulary);
+        remainingWords = [...shuffledVocabulary];
+        masteredWords.clear();
+        stats = {correct: 0, incorrect: 0};
+
+        // Update UI
         updateStats();
+
+        // Ensure quiz card is visible, completion screen hidden
+        document.getElementById('completion-screen').classList.remove('active');
+        document.getElementById('quiz-card').classList.remove('hidden');
+
+        // Display first word
         displayWord();
-    </script>
+    }
+
+    // Load initial vocabulary
+    let vocabulary = loadVocabulary(localStorage.getItem('selectedVocabularySet') || 'all');
+
+    // Shuffle array
+    function shuffleArray(array) {
+        const shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    }
+
+    // Initialize session-based tracking
+    let shuffledVocabulary = shuffleArray(vocabulary);
+    let remainingWords = [...shuffledVocabulary]; // Queue of words to be answered correctly
+    let masteredWords = new Set(); // Track words answered correctly
+    let stats = {correct: 0, incorrect: 0};
+
+    function updateStats() {
+        const total = stats.correct + stats.incorrect;
+        const rate = total > 0 ? Math.round((stats.correct / total) * 100) : 0;
+
+        let emoji = '😊'; // Default starting happy
+        if (total > 0) {
+            if (rate === 100) emoji = '😄';
+            else if (rate >= 90) emoji = '😊';
+            else if (rate >= 70) emoji = '🙂';
+            else if (rate >= 50) emoji = '😐';
+            else if (rate >= 30) emoji = '🙁';
+            else emoji = '😢';
+        }
+
+        document.getElementById('smiley').textContent = emoji;
+    }
+
+    function displayWord() {
+        // Check if session is complete
+        if (remainingWords.length === 0) {
+            showCompletionScreen();
+            return;
+        }
+
+        const word = remainingWords[0];
+        document.getElementById('german-word').textContent = word.german;
+
+        // Update progress bar and text
+        const totalWords = shuffledVocabulary.length;
+        const remainingCount = remainingWords.length;
+        const completedCount = totalWords - remainingCount;
+        const progressPercent = (completedCount / totalWords) * 100;
+
+        const progressBar = document.getElementById('progress-bar');
+        progressBar.style.width = progressPercent + '%';
+        progressBar.textContent = completedCount > 0 ? Math.round(progressPercent) + '%' : '';
+
+        document.getElementById('progress-text').textContent =
+            `${remainingCount} von ${totalWords} verbleibend`;
+
+        // Reset input
+        const input = document.getElementById('answer-input');
+        input.value = '';
+        input.className = '';
+        input.disabled = false;
+        input.focus();
+
+        // Reset feedback
+        document.getElementById('feedback').textContent = '';
+        document.getElementById('feedback').className = 'feedback';
+
+        // Reset buttons
+        document.getElementById('check-btn').style.display = 'inline-block';
+        document.getElementById('next-btn').style.display = 'none';
+
+        // Disable prev button in session-based mode
+        document.getElementById('prev-btn').disabled = true;
+    }
+
+    function checkAnswer() {
+        const input = document.getElementById('answer-input');
+
+        // Normalize function: expand contractions, remove punctuation and extra spaces
+        const normalize = (str) => {
+            return str
+                .toLowerCase()
+                // Expand common contractions
+                .replace(/you're/g, 'you are')
+                .replace(/she's/g, 'she is')
+                .replace(/he's/g, 'he is')
+                .replace(/it's/g, 'it is')
+                .replace(/they're/g, 'they are')
+                .replace(/we're/g, 'we are')
+                .replace(/i'm/g, 'i am')
+                .replace(/isn't/g, 'is not')
+                .replace(/aren't/g, 'are not')
+                .replace(/wasn't/g, 'was not')
+                .replace(/weren't/g, 'were not')
+                .replace(/don't/g, 'do not')
+                .replace(/doesn't/g, 'does not')
+                .replace(/didn't/g, 'did not')
+                // Remove slashes between words (like "he/she/it")
+                .replace(/\//g, ' ')
+                // Remove punctuation
+                .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\?]/g, '')
+                // Normalize whitespace
+                .replace(/\s+/g, ' ')
+                .trim();
+        };
+
+        const currentWord = remainingWords[0];
+        const userAnswer = normalize(input.value);
+
+        // Split correct answer by "/" to handle alternatives (e.g., "a lot of / lots of")
+        const correctAnswerVariants = currentWord.english
+            .split('/')
+            .map(variant => normalize(variant.trim()));
+
+        if (!userAnswer) return;
+
+        // Check if user answer matches any of the acceptable variants
+        const isCorrect = correctAnswerVariants.some(variant => userAnswer === variant);
+
+        // Motivational messages
+        const correctMessages = ['Super!', 'Perfekt!', 'Fantastisch!', 'Klasse!', 'Toll gemacht!', 'Genau richtig!', 'Sehr gut!'];
+        const incorrectMessages = ['Fast richtig!', 'Versuch\'s nochmal!', 'So nah dran!', 'Nicht aufgeben!', 'Weiter so!'];
+
+        // Update UI
+        input.className = isCorrect ? 'correct bounce' : 'incorrect shake';
+        input.disabled = true;
+
+        const feedback = document.getElementById('feedback');
+        const card = document.getElementById('quiz-card');
+
+        if (isCorrect) {
+            // Random motivational message for correct answer
+            const randomMessage = correctMessages[Math.floor(Math.random() * correctMessages.length)];
+            feedback.textContent = randomMessage;
+            feedback.className = 'feedback correct fade-in-bounce';
+            stats.correct++;
+
+            // Bounce animation
+            input.classList.add('bounce');
+            setTimeout(() => input.classList.remove('bounce'), 400);
+
+            // Remove from remaining words and add to mastered
+            remainingWords.shift();
+            masteredWords.add(currentWord.german);
+        } else {
+            // Random encouraging message for incorrect answer
+            const randomMessage = incorrectMessages[Math.floor(Math.random() * incorrectMessages.length)];
+            feedback.textContent = `${randomMessage} Richtig: ${currentWord.english}`;
+            feedback.className = 'feedback incorrect fade-in-bounce';
+            stats.incorrect++;
+
+            // Shake animations
+            input.classList.add('shake');
+            card.classList.add('shake');
+            setTimeout(() => {
+                input.classList.remove('shake');
+                card.classList.remove('shake');
+            }, 500);
+
+            // Move word to end of queue (remove from front, add to back)
+            remainingWords.shift();
+            remainingWords.push(currentWord);
+        }
+
+        // Update stats
+        updateStats();
+
+        // Update buttons
+        document.getElementById('check-btn').style.display = 'none';
+        document.getElementById('next-btn').style.display = 'inline-block';
+        document.getElementById('next-btn').focus();
+    }
+
+    function nextWord() {
+        // Simply display the next word (or completion screen if done)
+        displayWord();
+    }
+
+    function previousWord() {
+        // Previous button disabled in session-based mode
+        // No action needed
+    }
+
+    function showCompletionScreen() {
+        // Hide quiz card, show completion screen
+        document.getElementById('quiz-card').classList.add('hidden');
+        document.getElementById('completion-screen').classList.add('active');
+
+        // Update completion stats
+        document.getElementById('session-correct').textContent = stats.correct;
+        document.getElementById('session-incorrect').textContent = stats.incorrect;
+
+        const total = stats.correct + stats.incorrect;
+        const rate = total > 0 ? Math.round((stats.correct / total) * 100) : 0;
+        document.getElementById('session-rate').textContent = rate + '%';
+    }
+
+    function startNewSession() {
+        // Reset session data
+        shuffledVocabulary = shuffleArray(vocabulary);
+        remainingWords = [...shuffledVocabulary];
+        masteredWords.clear();
+        stats = {correct: 0, incorrect: 0};
+
+        // Update UI
+        updateStats();
+
+        // Hide completion screen, show quiz card
+        document.getElementById('completion-screen').classList.remove('active');
+        document.getElementById('quiz-card').classList.remove('hidden');
+
+        // Display first word
+        displayWord();
+    }
+
+    // Keyboard support
+    document.getElementById('answer-input').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            const checkBtn = document.getElementById('check-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            if (checkBtn.style.display !== 'none') {
+                checkAnswer();
+            } else if (nextBtn.style.display !== 'none') {
+                nextWord();
+            }
+        }
+    });
+
+    // Initialize on load
+    initializeSetSelector();
+    updateStats();
+    displayWord();
+</script>
 </body>
 </html>
