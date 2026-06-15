@@ -1,0 +1,8 @@
+{
+  "name": "vokabeltrainer",
+  "private": true,
+  "description": "Simple vocabulary trainer (static site).",
+  "scripts": {
+    "validate": "node tools/validate.mjs"
+  }
+}

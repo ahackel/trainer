@@ -1,0 +1,9 @@
+#!/bin/sh
+# Blocks the commit if the vocabulary data is invalid.
+# Enabled via: git config core.hooksPath .githooks  (see README).
+echo "Validating vocabulary data..."
+if ! node tools/validate.mjs; then
+  echo ""
+  echo "Commit aborted: fix the errors above, or skip with 'git commit --no-verify'."
+  exit 1
+fi
