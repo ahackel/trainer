@@ -30,5 +30,5 @@ ruhig, still leise|quiet
 ordentlich|tidy
 die Kleidung, Kleidungsstücke|clothes
 auf dem Bett|on the bed
-auf dem Stuhl / auf jenem Stuhl|on that chair
+auf dem Stuhl / auf jenem Stuhl|on that chair`
 };
