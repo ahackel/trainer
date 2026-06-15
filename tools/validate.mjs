@@ -2,70 +2,67 @@
 // Validates the vocabulary data so a broken file can never reach the live site.
 // Run with: node tools/validate.mjs  (or: npm run validate)
 //
+// Data lives in data/vocabulary.json:
+//   { "pages": [ { "page": 230, "chapter": <string|null>, "title": <string?>,
+//                  "words": [ { "de": "...", "en": "..." } ] } ] }
+//
 // Checks:
-//   - data/manifest.json is valid JSON with a non-empty "pages" array
-//   - every file listed in the manifest exists and is valid JSON
-//   - every page has: id (matching its filename), name, and a non-empty
-//     "words" array where each entry has non-empty "de" and "en" strings
-//   - no page file on disk is missing from the manifest (and vice versa)
-//   - no duplicate ids
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
+//   - file exists and is valid JSON with a non-empty "pages" array
+//   - every page has an integer "page" number (unique across the file)
+//   - "chapter" is a non-empty string or null
+//   - "words" is a non-empty array; each entry has non-empty "de" and "en"
+import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
-const dataDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'data');
+const dataPath = join(dirname(fileURLToPath(import.meta.url)), '..', 'data', 'vocabulary.json');
 const errors = [];
 const err = (msg) => errors.push(msg);
 
-function readJson(path, label) {
+let data = null;
+if (!existsSync(dataPath)) {
+  err('data/vocabulary.json is missing');
+} else {
   try {
-    return JSON.parse(readFileSync(path, 'utf8'));
+    data = JSON.parse(readFileSync(dataPath, 'utf8'));
   } catch (e) {
-    err(`${label}: invalid JSON — ${e.message}`);
-    return null;
+    err('data/vocabulary.json: invalid JSON — ' + e.message);
   }
 }
 
-const manifestPath = join(dataDir, 'manifest.json');
-const manifest = existsSync(manifestPath) ? readJson(manifestPath, 'manifest.json') : (err('manifest.json is missing'), null);
+const pages = data && Array.isArray(data.pages) ? data.pages : null;
+if (data && !pages) err('"pages" must be an array');
+if (pages && pages.length === 0) err('"pages" is empty');
 
-const listed = manifest && Array.isArray(manifest.pages) ? manifest.pages : null;
-if (manifest && !listed) err('manifest.json: "pages" must be an array');
-if (listed && listed.length === 0) err('manifest.json: "pages" is empty');
-
-const onDisk = existsSync(dataDir)
-  ? readdirSync(dataDir).filter((f) => /^page-\d+\.json$/.test(f))
-  : [];
-
-// Manifest vs. disk consistency.
-for (const f of listed || []) {
-  if (!onDisk.includes(f)) err(`manifest lists "${f}" but data/${f} does not exist`);
-}
-for (const f of onDisk) {
-  if (listed && !listed.includes(f)) err(`data/${f} exists but is not listed in manifest.json`);
-}
-
-// Per-page structural validation.
-const seenIds = new Set();
-for (const file of listed || []) {
-  const path = join(dataDir, file);
-  if (!existsSync(path)) continue; // already reported above
-  const set = readJson(path, file);
-  if (!set) continue;
-
-  const expectedId = file.replace(/\.json$/, '');
-  if (set.id !== expectedId) err(`${file}: "id" is "${set.id}", expected "${expectedId}"`);
-  if (seenIds.has(set.id)) err(`${file}: duplicate id "${set.id}"`);
-  seenIds.add(set.id);
-
-  if (typeof set.name !== 'string' || !set.name.trim()) err(`${file}: "name" must be a non-empty string`);
-  if (!Array.isArray(set.words) || set.words.length === 0) {
-    err(`${file}: "words" must be a non-empty array`);
+const seenPages = new Set();
+for (const [i, p] of (pages || []).entries()) {
+  const where = `pages[${i}]`;
+  if (!p || typeof p !== 'object') {
+    err(`${where}: must be an object`);
     continue;
   }
-  set.words.forEach((w, i) => {
-    if (!w || typeof w.de !== 'string' || !w.de.trim()) err(`${file}: words[${i}] has empty "de"`);
-    if (!w || typeof w.en !== 'string' || !w.en.trim()) err(`${file}: words[${i}] has empty "en"`);
+  if (!Number.isInteger(p.page)) {
+    err(`${where}: "page" must be an integer`);
+  } else if (seenPages.has(p.page)) {
+    err(`${where}: duplicate page number ${p.page}`);
+  } else {
+    seenPages.add(p.page);
+  }
+
+  if (!(p.chapter === null || (typeof p.chapter === 'string' && p.chapter.trim()))) {
+    err(`page ${p.page}: "chapter" must be a non-empty string or null`);
+  }
+  if (p.title !== undefined && p.title !== null && typeof p.title !== 'string') {
+    err(`page ${p.page}: "title" must be a string when present`);
+  }
+
+  if (!Array.isArray(p.words) || p.words.length === 0) {
+    err(`page ${p.page}: "words" must be a non-empty array`);
+    continue;
+  }
+  p.words.forEach((w, j) => {
+    if (!w || typeof w.de !== 'string' || !w.de.trim()) err(`page ${p.page} words[${j}]: empty "de"`);
+    if (!w || typeof w.en !== 'string' || !w.en.trim()) err(`page ${p.page} words[${j}]: empty "en"`);
   });
 }
 
@@ -74,5 +71,6 @@ if (errors.length) {
   for (const e of errors) console.error('  - ' + e);
   process.exit(1);
 }
-const total = (listed || []).length;
-console.log(`✓ Vocabulary OK: ${total} page${total === 1 ? '' : 's'}, ${seenIds.size} unique ids.`);
+const totalWords = (pages || []).reduce((n, p) => n + p.words.length, 0);
+const chapters = new Set((pages || []).map((p) => p.chapter).filter((c) => c != null));
+console.log(`✓ Vocabulary OK: ${seenPages.size} pages, ${chapters.size} chapters, ${totalWords} words.`);

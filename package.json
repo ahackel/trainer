@@ -3,6 +3,7 @@
   "private": true,
   "description": "Simple vocabulary trainer (static site).",
   "scripts": {
-    "validate": "node tools/validate.mjs"
+    "validate": "node tools/validate.mjs",
+    "build": "node tools/validate.mjs && node tools/build-data.mjs"
   }
 }

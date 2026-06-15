@@ -26,7 +26,6 @@
             background: white;
             border-radius: 30px;
             padding: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
             max-width: 600px;
             width: 100%;
         }
@@ -67,7 +66,6 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
 
         .word {
@@ -100,7 +98,6 @@
         input[type="text"]:focus {
             outline: none;
             border-color: #7c3aed;
-            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
         }
 
         input[type="text"].correct {
@@ -142,7 +139,6 @@
             border-radius: 15px;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .btn-primary {
@@ -153,14 +149,12 @@
         .btn-primary:hover {
             background: #6d28d9;
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
 
         .btn-primary:disabled {
             background: #ccc;
             cursor: not-allowed;
             transform: none;
-            box-shadow: none;
         }
 
         .btn-secondary {
@@ -171,14 +165,12 @@
         .btn-secondary:hover {
             background: #64748b;
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
 
         .btn-secondary:disabled {
             background: #ccc;
             cursor: not-allowed;
             transform: none;
-            box-shadow: none;
         }
 
         .btn-success {
@@ -189,39 +181,86 @@
         .btn-success:hover {
             background: #059669;
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
 
-        .set-selector {
+        .filter {
             margin-bottom: 30px;
-            text-align: center;
         }
 
-        .set-selector label {
-            display: block;
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px 10px;
+            font-size: 1em;
+            font-weight: 600;
+            color: #666;
+            border: 3px solid #ddd;
+            border-radius: 15px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            border-color: #7c3aed;
+        }
+
+        .tab.active {
+            color: white;
+            background: #7c3aed;
+            border-color: #7c3aed;
+        }
+
+        .tab-panel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tab-panel[hidden] {
+            display: none;
+        }
+
+        .tab-panel label {
             font-size: 0.9em;
             color: #666;
-            margin-bottom: 8px;
         }
 
-        .set-selector select {
-            width: 100%;
-            padding: 12px 20px;
+        .tab-panel select,
+        .tab-panel input {
+            padding: 10px 16px;
             font-size: 1em;
             border: 3px solid #ddd;
             border-radius: 15px;
             background: white;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
 
-        .set-selector select:focus {
+        .tab-panel select {
+            flex: 1;
+        }
+
+        .tab-panel input {
+            width: 90px;
+            text-align: center;
+        }
+
+        .tab-panel select:focus,
+        .tab-panel input:focus {
             outline: none;
             border-color: #7c3aed;
-            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
         }
 
-        .set-selector select:hover {
+        .tab-panel select:hover,
+        .tab-panel input:hover {
             border-color: #7c3aed;
         }
 
@@ -251,17 +290,22 @@
                 margin-bottom: 20px;
             }
 
-            .set-selector {
+            .filter {
                 margin-bottom: 20px;
             }
 
-            .set-selector label {
-                font-size: 1em;
-                margin-bottom: 8px;
+            .tab {
+                padding: 14px 10px;
+                font-size: 1.1em;
             }
 
-            .set-selector select {
-                padding: 14px 20px;
+            .tab-panel label {
+                font-size: 1em;
+            }
+
+            .tab-panel select,
+            .tab-panel input {
+                padding: 12px 18px;
                 font-size: 1.1em;
             }
 
@@ -359,7 +403,6 @@
             border-radius: 20px;
             padding: 25px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
 
         .completion-screen .session-stats h3 {
@@ -386,13 +429,11 @@
             border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.3);
         }
 
         .completion-screen .new-session-btn:hover {
             background: #6d28d9;
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
         }
 
         .card.hidden {
@@ -488,12 +529,22 @@
 <div class="container">
     <h1>Vokabel Trainer</h1>
 
-    <div class="set-selector">
-        <label for="set-select">Vokabel-Set auswählen:</label>
-        <select id="set-select" onchange="onSetChange()">
-            <option value="random-5">5 Zufällige Wörter</option>
-            <option value="all">Alle Sets</option>
-        </select>
+    <div class="filter">
+        <div class="tabs">
+            <button type="button" class="tab active" data-mode="all" onclick="setMode('all')">Alle</button>
+            <button type="button" class="tab" data-mode="chapter" onclick="setMode('chapter')">Kapitel</button>
+            <button type="button" class="tab" data-mode="pages" onclick="setMode('pages')">Seiten</button>
+        </div>
+        <div class="tab-panel" id="panel-chapter" hidden>
+            <label for="chapter-select">Kapitel:</label>
+            <select id="chapter-select" onchange="onFilterChange()"></select>
+        </div>
+        <div class="tab-panel" id="panel-pages" hidden>
+            <label for="page-from">Von:</label>
+            <input type="number" id="page-from" inputmode="numeric" onchange="onFilterChange()">
+            <label for="page-to">Bis:</label>
+            <input type="number" id="page-to" inputmode="numeric" onchange="onFilterChange()">
+        </div>
     </div>
 
     <div class="stats">
@@ -545,92 +596,157 @@
     </div>
 </div>
 
+<script src="data/vocabulary.js"></script>
 <script>
-    // Vocabulary sets are loaded at runtime from data/manifest.json.
-    // Each page is an isolated JSON file, so a problem in one page can no
-    // longer break the rest of the app (see loadAllSets' per-file try/catch).
-    let vocabularySets = [];
+    // All vocabulary pages, loaded once from data/vocabulary.js at startup.
+    // Each page: { page: <number>, chapter: <string|null>, words: [{de, en}] }
+    let allPages = [];
 
-    // Fetch the manifest and every page it lists. A page that is missing or
-    // malformed is skipped with a console error instead of aborting the app.
-    async function loadAllSets() {
-        const res = await fetch('data/manifest.json', {cache: 'no-cache'});
-        if (!res.ok) throw new Error('manifest.json could not be loaded (HTTP ' + res.status + ')');
-        const manifest = await res.json();
+    // Current filter. mode: 'all' | 'chapter' | 'pages'.
+    let filter = {mode: 'all', chapter: null, from: null, to: null};
 
-        const sets = [];
-        for (const file of manifest.pages) {
-            try {
-                const r = await fetch('data/' + file, {cache: 'no-cache'});
-                if (!r.ok) throw new Error('HTTP ' + r.status);
-                const set = await r.json();
-                if (!set.id || !set.name || !Array.isArray(set.words) || set.words.length === 0) {
-                    throw new Error('invalid structure');
-                }
-                sets.push(set);
-            } catch (err) {
-                console.error('Skipping vocabulary file "' + file + '":', err);
+    // Read the vocabulary from the global set by data/vocabulary.js (loaded via a
+    // <script> tag in <head>). A script tag is used instead of fetch() so the page
+    // works under file:// — opening index.html directly or running it offline on the
+    // iPad home screen — where fetch() of a local file is blocked by the browser.
+    function loadAllPages() {
+        const data = window.VOCABULARY;
+        if (!data || !Array.isArray(data.pages)) {
+            throw new Error('data/vocabulary.js missing or has no "pages" array (run: npm run build)');
+        }
+        return data.pages;
+    }
+
+    // Build the {german, english} word list for the current filter.
+    function loadVocabulary() {
+        let pages;
+        if (filter.mode === 'chapter') {
+            pages = allPages.filter(p => p.chapter != null && p.chapter === filter.chapter);
+        } else if (filter.mode === 'pages') {
+            const from = filter.from, to = filter.to;
+            pages = allPages.filter(p => p.page >= from && p.page <= to);
+        } else {
+            pages = allPages;
+        }
+        return pages
+            .flatMap(p => p.words)
+            .map(w => ({german: w.de, english: w.en}));
+    }
+
+    // Distinct chapters present in the data, in first-seen order.
+    function availableChapters() {
+        const seen = [];
+        for (const p of allPages) {
+            if (p.chapter != null && !seen.includes(p.chapter)) seen.push(p.chapter);
+        }
+        return seen;
+    }
+
+    // Populate the filter controls from the data and restore the saved filter.
+    function initializeFilter() {
+        const saved = JSON.parse(localStorage.getItem('vocabFilter') || 'null');
+
+        // Chapter dropdown.
+        const chapterSelect = document.getElementById('chapter-select');
+        const chapters = availableChapters();
+        chapterSelect.innerHTML = '';
+        if (chapters.length === 0) {
+            const opt = document.createElement('option');
+            opt.textContent = 'Keine Kapitel vorhanden';
+            opt.disabled = true;
+            chapterSelect.appendChild(opt);
+            chapterSelect.disabled = true;
+        } else {
+            chapters.forEach(ch => {
+                const opt = document.createElement('option');
+                opt.value = ch;
+                opt.textContent = ch;
+                chapterSelect.appendChild(opt);
+            });
+        }
+
+        // Page range defaults to the full available range.
+        const nums = allPages.map(p => p.page);
+        const minPage = nums.length ? Math.min(...nums) : 0;
+        const maxPage = nums.length ? Math.max(...nums) : 0;
+        const fromInput = document.getElementById('page-from');
+        const toInput = document.getElementById('page-to');
+        fromInput.min = toInput.min = minPage;
+        fromInput.max = toInput.max = maxPage;
+        fromInput.value = minPage;
+        toInput.value = maxPage;
+
+        // Restore saved filter where the values are still valid.
+        if (saved) {
+            if (saved.mode === 'chapter' && chapters.includes(saved.chapter)) {
+                chapterSelect.value = saved.chapter;
+            }
+            if (saved.mode === 'pages') {
+                if (saved.from != null) fromInput.value = saved.from;
+                if (saved.to != null) toInput.value = saved.to;
+            }
+            if (['all', 'chapter', 'pages'].includes(saved.mode)) {
+                // chapter mode only makes sense when chapters exist
+                filter.mode = (saved.mode === 'chapter' && chapters.length === 0) ? 'all' : saved.mode;
             }
         }
-        return sets;
+
+        applyFilterControls();
+        reloadFromFilter();
     }
 
-    // Build the {german, english} word list for the selected set(s).
-    function loadVocabulary(setId) {
-        const selectedSets = (setId === 'all' || setId === 'random-5')
-            ? vocabularySets
-            : vocabularySets.filter(set => set.id === setId);
+    // Read the current control values into `filter`.
+    function readFilterControls() {
+        const chapterSelect = document.getElementById('chapter-select');
+        const fromInput = document.getElementById('page-from');
+        const toInput = document.getElementById('page-to');
 
-        const words = selectedSets
-            .flatMap(set => set.words)
-            .map(w => ({german: w.de, english: w.en}));
+        filter.chapter = chapterSelect.disabled ? null : chapterSelect.value;
 
-        // Special case: shuffle everything and return only 5.
-        if (setId === 'random-5') {
-            return shuffleArray(words).slice(0, 5);
-        }
-        return words;
+        let from = parseInt(fromInput.value, 10);
+        let to = parseInt(toInput.value, 10);
+        if (isNaN(from)) from = parseInt(fromInput.min, 10) || 0;
+        if (isNaN(to)) to = parseInt(toInput.max, 10) || from;
+        if (from > to) [from, to] = [to, from]; // tolerate reversed input
+        filter.from = from;
+        filter.to = to;
     }
 
-    // Initialize dropdown with all available sets
-    function initializeSetSelector() {
-        const select = document.getElementById('set-select');
-
-        vocabularySets.forEach(set => {
-            const option = document.createElement('option');
-            option.value = set.id;
-            option.textContent = set.name;
-            select.appendChild(option);
+    // Reflect `filter.mode` in the tab buttons and visible panel.
+    function applyFilterControls() {
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.mode === filter.mode);
         });
-
-        // Restore saved selection
-        const savedSet = localStorage.getItem('selectedVocabularySet') || 'all';
-        select.value = savedSet;
+        document.getElementById('panel-chapter').hidden = filter.mode !== 'chapter';
+        document.getElementById('panel-pages').hidden = filter.mode !== 'pages';
     }
 
-    // Handle set change
-    function onSetChange() {
-        const select = document.getElementById('set-select');
-        const selectedSet = select.value;
+    // Switch tab.
+    function setMode(mode) {
+        filter.mode = mode;
+        applyFilterControls();
+        reloadFromFilter();
+    }
 
-        // Save selection
-        localStorage.setItem('selectedVocabularySet', selectedSet);
+    // A control (chapter dropdown / page inputs) changed.
+    function onFilterChange() {
+        reloadFromFilter();
+    }
 
-        // Reload vocabulary and start new session
-        vocabulary = loadVocabulary(selectedSet);
+    // Re-read controls, persist, rebuild vocabulary and restart the session.
+    function reloadFromFilter() {
+        readFilterControls();
+        localStorage.setItem('vocabFilter', JSON.stringify(filter));
+
+        vocabulary = loadVocabulary();
         shuffledVocabulary = shuffleArray(vocabulary);
         remainingWords = [...shuffledVocabulary];
         masteredWords.clear();
         stats = {correct: 0, incorrect: 0};
 
-        // Update UI
         updateStats();
-
-        // Ensure quiz card is visible, completion screen hidden
         document.getElementById('completion-screen').classList.remove('active');
         document.getElementById('quiz-card').classList.remove('hidden');
-
-        // Display first word
         displayWord();
     }
 
@@ -671,6 +787,22 @@
     }
 
     function displayWord() {
+        // No words match the current filter — show an empty state instead of
+        // the completion screen (which would imply the session was finished).
+        if (shuffledVocabulary.length === 0) {
+            document.getElementById('german-word').textContent = '🤷';
+            document.getElementById('progress-text').textContent =
+                'Keine Vokabeln für diese Auswahl.';
+            document.getElementById('progress-bar').style.width = '0%';
+            document.getElementById('progress-bar').textContent = '';
+            document.getElementById('answer-input').value = '';
+            document.getElementById('answer-input').disabled = true;
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('check-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'none';
+            return;
+        }
+
         // Check if session is complete
         if (remainingWords.length === 0) {
             showCompletionScreen();
@@ -869,7 +1001,7 @@
     // Initialize on load: fetch the vocabulary data, then start the session.
     (async () => {
         try {
-            vocabularySets = await loadAllSets();
+            allPages = loadAllPages();
         } catch (err) {
             console.error(err);
             document.getElementById('progress-text').textContent =
@@ -877,14 +1009,10 @@
             return;
         }
 
-        const savedSet = localStorage.getItem('selectedVocabularySet') || 'all';
-        vocabulary = loadVocabulary(savedSet);
-        shuffledVocabulary = shuffleArray(vocabulary);
-        remainingWords = [...shuffledVocabulary];
-
-        initializeSetSelector();
+        // initializeFilter() restores the saved filter, populates the controls,
+        // and calls reloadFromFilter() which builds the session and renders.
+        initializeFilter();
         updateStats();
-        displayWord();
     })();
 </script>
 </body>
